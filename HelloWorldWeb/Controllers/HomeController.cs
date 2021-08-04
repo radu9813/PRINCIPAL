@@ -26,9 +26,9 @@ namespace HelloWorldWeb.Controllers
         }
 
         [HttpPost]
-        public void AddTeamMemeberHere(string teamMember)
+        public void AddTeamMemeberHere(string name)
         {
-            this.teamInfo.TeamMembers.Add(teamMember);
+            this.teamInfo.TeamMembers.Add(name);
         }
 
         [HttpGet]

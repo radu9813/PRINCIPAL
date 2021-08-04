@@ -2,10 +2,19 @@
 
     $("#createButton").click(function () {
         var newcomerName = $("#nameField").val();
+        
 
-        // Remember string interpolation
-        $("#teamList").append(`<li>${newcomerName}</li>`);
+        $.ajax({
+            method: "POST",
+            url: "/Home/AddTeamMemeberHere",
+            data: { name: newcomerName}
+        })
+            .done(function (msg) {
+                alert("Data Saved: " + msg);
+                $("#teamList").append(`<li>${newcomerName}</li>`);
+                $("#nameField").val("");
+            });
 
-        $("#nameField").val("");
+       
     })
 });
