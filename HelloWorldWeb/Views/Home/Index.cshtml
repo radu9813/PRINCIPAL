@@ -6,6 +6,11 @@
     <script type="text/javascript" src="~/js/Index.js"></script>
 }
 
+@section AdditionalStyles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+}
+
+
 
 <div class="text-center">
     <h1 class="display-4">Our Team</h1>
@@ -15,11 +20,20 @@
             var member = Model.TeamMembers[i];
 
             <li class="member">
-                @member
+                <span>
+                    @member  
+                </span>
+                <span>
+                    <i class="update fa fa-pencil" aria-hidden="true"></i>
+                </span>
+
+                <span>
+                    <i class="delete fa fa-times" aria-hidden="true"></i>
+                </span>
             </li>
         }
     </ul>
     <input type="text" id="nameField" title="e.g. Radu" />
-    <button class="btn-primary" id="createButton" title="Create">Create</button>
- 
+    <button class="btn-primary" id="createButton" } title="Create">Create</button>
+
 </div>
