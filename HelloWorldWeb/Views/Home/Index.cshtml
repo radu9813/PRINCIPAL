@@ -17,7 +17,7 @@
     <ul id="teamList">
         @for (var i = 0; i < Model.TeamMembers.Count; i++)
         {
-            var member = Model.TeamMembers[i];
+            var member = Model.TeamMembers[i].Name;
 
             <li class="member">
                 <span>

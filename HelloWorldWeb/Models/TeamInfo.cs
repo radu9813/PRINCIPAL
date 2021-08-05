@@ -6,6 +6,6 @@
     {
         public string Name { get; set; }
 
-        public List<string> TeamMembers { get; set; }
+        public List<TeamMember> TeamMembers { get; set; }
     }
 }

@@ -9,8 +9,8 @@
             url: "/Home/AddTeamMemeberHere",
             data: { name: newcomerName}
         })
-            .done(function (msg) {
-
+            .done(function (response) {
+                var g = response;
                 $("#teamList").append(
                     `<li class="member">
                         <span>
@@ -21,7 +21,7 @@
                         </span>
 
                         <span>
-                            <i class="delete fa fa-times" onclick="deleteMember(${length})" aria-hidden="true"></i>
+                            <i class="delete fa fa-times" onclick="deleteMember(${g})" aria-hidden="true"></i>
                         </span>
                     </li>`);
                 $("#nameField").val("");
