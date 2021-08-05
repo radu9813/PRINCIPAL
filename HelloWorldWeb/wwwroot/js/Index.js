@@ -10,11 +10,36 @@
             data: { name: newcomerName}
         })
             .done(function (msg) {
-                alert("Data Saved: " + msg);
-                $("#teamList").append(`<li>${newcomerName}</li>`);
+                $("#teamList").append(
+                    `<li class="member">
+                        <span>
+                            ${newcomerName}
+                        </span>
+                        <span>
+                            <i class="update fa fa-pencil" aria-hidden="true"></i>
+                        </span>
+
+                        <span>
+                            <i class="delete fa fa-times" aria-hidden="true"></i>
+                        </span>
+                    </li>`);
                 $("#nameField").val("");
+                $("#teamList").
+                document.getElementById("createButton").disabled = true;
             });
 
        
     })
 });
+
+(function () {
+ 
+    $('#nameField').on('change textInput input', function () {
+        var inputVal = this.value;
+        if (inputVal != "") {
+            document.getElementById("createButton").disabled = false;
+        } else {
+            document.getElementById("createButton").disabled = true;
+        }
+    });
+}());
