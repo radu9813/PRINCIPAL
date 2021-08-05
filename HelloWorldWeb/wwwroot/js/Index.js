@@ -67,6 +67,7 @@ function deleteMember(index) {
     $("#clearButton").click(function () {
 
         document.getElementById("nameField").value = "";
+        document.getElementById("createButton").disabled = true;
     });
 
 }());
