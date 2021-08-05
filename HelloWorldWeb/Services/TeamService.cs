@@ -30,5 +30,10 @@ namespace HelloWorldWeb.Services
             return name;
         }
 
+        public void RemoveMember(int memberIndex)
+        {
+            teamInfo.TeamMembers.RemoveAt(memberIndex);
+        }
+
     }
 }

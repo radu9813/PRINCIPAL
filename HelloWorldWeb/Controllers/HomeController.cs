@@ -31,6 +31,12 @@ namespace HelloWorldWeb.Controllers
             this.teamService.AddTeamMember(name);
         }
 
+        [HttpDelete]
+        public void RemoveMember(int memberIndex)
+        {
+            teamService.RemoveMember(memberIndex);
+        }
+
         [HttpGet]
         public int GetTeamMemberCount()
         {

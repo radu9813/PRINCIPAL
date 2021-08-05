@@ -2,7 +2,7 @@
 
     $("#createButton").click(function () {
         var newcomerName = $("#nameField").val();
-        
+        var length = $("#teamMembers").children().length;
 
         $.ajax({
             method: "POST",
@@ -10,6 +10,7 @@
             data: { name: newcomerName}
         })
             .done(function (msg) {
+
                 $("#teamList").append(
                     `<li class="member">
                         <span>
@@ -20,11 +21,10 @@
                         </span>
 
                         <span>
-                            <i class="delete fa fa-times" aria-hidden="true"></i>
+                            <i class="delete fa fa-times" onclick="deleteMember(${length})" aria-hidden="true"></i>
                         </span>
                     </li>`);
                 $("#nameField").val("");
-                $("#teamList").
                 document.getElementById("createButton").disabled = true;
             });
 
@@ -42,4 +42,31 @@
             document.getElementById("createButton").disabled = true;
         }
     });
+}());
+
+
+function deleteMember(index) {
+
+
+    $.ajax({
+        url: "/Home/RemoveMember",
+        method: "DELETE",
+        data: {
+            memberIndex: index
+        },
+        success: function (result) {
+            location.reload();
+        }
+    })
+
+
+        
+}
+
+(function () {
+    $("#clearButton").click(function () {
+
+        document.getElementById("nameField").value = "";
+    });
+
 }());

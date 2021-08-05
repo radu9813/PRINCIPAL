@@ -21,19 +21,20 @@
 
             <li class="member">
                 <span>
-                    @member  
+                    @member
                 </span>
                 <span>
                     <i class="update fa fa-pencil" aria-hidden="true"></i>
                 </span>
 
                 <span>
-                    <i class="delete fa fa-times" aria-hidden="true"></i>
+                    <i class="delete fa fa-times" onclick=deleteMember(@i) aria-hidden="true"></i>
                 </span>
             </li>
         }
     </ul>
-    <input type="text" id="nameField" onchange="getInputValue()" title="e.g. Radu" />
+    <input type="text" id="nameField" title="e.g. Radu" />
     <button class="btn-primary" id="createButton" disabled=true title="Create">Create</button>
+    <button class="btn-primary" id="clearButton" title="Clear">Clear</button>
 
 </div>
