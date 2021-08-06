@@ -71,3 +71,37 @@ function deleteMember(index) {
     });
 
 }());
+
+
+$('#submit').click(function () {
+    const id = $('#editClassmate').attr('member-id');
+    const newName = $('#classmateName').val();
+
+    $.ajax({
+        url: "/Home/UpdateMemberName",
+        method: "PUT",
+        data: {
+            memberId: id,
+            name: newName
+        },
+        success: function (result) {
+            location.reload();
+        }
+    })
+});
+
+$("#teamList").on("click", ".pencil", function () {
+
+   var targetMemberTag = $(this).closest('li');
+
+    var id = targetMemberTag.attr('member-id');
+
+    var currentName = targetMemberTag.find(".name").text();
+
+    $('#editClassmate').attr("member-id", id);
+
+    $('#classmateName').val(currentName);
+
+    $('#editClassmate').modal('show');
+
+})

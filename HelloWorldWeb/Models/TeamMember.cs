@@ -10,6 +10,7 @@ namespace HelloWorldWeb.Models
     public class TeamMember
     {
         private static int idCount = 0;
+
         public TeamMember(string name)
         {
             this.Name = name;
@@ -18,6 +19,7 @@ namespace HelloWorldWeb.Models
         }
 
         public int ID { get; set; }
+
         public string Name { get; set; }
     }
 }

@@ -18,12 +18,12 @@ namespace HelloWorldWeb.Services
                 TeamMembers = new List<TeamMember>(),
             };
 
-            this.teamInfo.TeamMembers.Add(new TeamMember("Teona"));
-            this.teamInfo.TeamMembers.Add(new TeamMember("Radu"));
-            this.teamInfo.TeamMembers.Add(new TeamMember("George"));
-            this.teamInfo.TeamMembers.Add(new TeamMember("Dragos"));
-            this.teamInfo.TeamMembers.Add(new TeamMember("Claudia"));
-            this.teamInfo.TeamMembers.Add(new TeamMember("Leon"));
+            this.AddTeamMember("Teona");
+            this.AddTeamMember("Radu");
+            this.AddTeamMember("George");
+            this.AddTeamMember("Dragos");
+            this.AddTeamMember("Claudia");
+            this.AddTeamMember("Leon");
         }
 
         public TeamInfo GetTeamInfo()
@@ -33,28 +33,31 @@ namespace HelloWorldWeb.Services
 
         public TeamMember GetTeamMemberByID(int id)
         {
-            foreach(TeamMember teamMember in this.teamInfo.TeamMembers) {
+            foreach (TeamMember teamMember in this.teamInfo.TeamMembers) {
                     if (id == teamMember.ID)
                     {
                         return teamMember;
                     }
-
             }
-            
 
             return null;
+        }
+
+        public void UpdateMemberName(int memberId, string name)
+        {
+            int index = teamInfo.TeamMembers.FindIndex(element => element.ID == memberId);
+            teamInfo.TeamMembers[index].Name = name;
         }
         public int AddTeamMember(string name)
         {
             TeamMember teamMember = new TeamMember(name);
-           
-            teamInfo.TeamMembers.Add(teamMember);
+            this.teamInfo.TeamMembers.Add(teamMember);
             return teamMember.ID;
         }
 
         public void RemoveMember(int memberIndex)
         {
-            teamInfo.TeamMembers.Remove(GetTeamMemberByID(memberIndex));
+            this.teamInfo.TeamMembers.Remove(GetTeamMemberByID(memberIndex));
         }
 
     }
