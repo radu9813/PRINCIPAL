@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldWeb.Tests", "HelloWorldWeb.Tests\HelloWorldWeb.Tests.csproj", "{4D8DD8BB-3EDB-418B-8D7D-0FAE266E4DCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorldWeb.Tests", "HelloWorldWeb.Tests\HelloWorldWeb.Tests.csproj", "{4D8DD8BB-3EDB-418B-8D7D-0FAE266E4DCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{2896720D-8EC1-4179-85FE-BF524D929ABD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{4D8DD8BB-3EDB-418B-8D7D-0FAE266E4DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D8DD8BB-3EDB-418B-8D7D-0FAE266E4DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D8DD8BB-3EDB-418B-8D7D-0FAE266E4DCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2896720D-8EC1-4179-85FE-BF524D929ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2896720D-8EC1-4179-85FE-BF524D929ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2896720D-8EC1-4179-85FE-BF524D929ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2896720D-8EC1-4179-85FE-BF524D929ABD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
