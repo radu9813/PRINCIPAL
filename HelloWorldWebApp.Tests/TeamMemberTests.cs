@@ -39,7 +39,7 @@ namespace HelloWorldWebApp.Tests
             int age = newMember.GetAge();
 
             //Assert
-            timeMock.Verify(_ => _.GetCurrentDate(), Times.AtMostOnce());
+            timeMock.Verify(_ => _.GetCurrentDate(), Times.Once());
             Assert.Equal(30, age);
         }
 
