@@ -7,9 +7,13 @@
 
   "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
-    "orderingRules": {"usingDirectivesPlacement": "outsideNamespace"},
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace"
+
+    },
+
     "documentationRules": {
-      "companyName": "Principal33"
+      "companyName": "Principal 33"
     }
   }
 }
