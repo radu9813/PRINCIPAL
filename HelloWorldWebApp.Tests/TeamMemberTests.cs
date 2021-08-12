@@ -12,19 +12,26 @@ namespace HelloWorldWebApp.Tests
 {
     public class TeamMemberTests
     {
-        private readonly ITimeService timeService;
+        private Mock<ITimeService> timeMock;
 
         public TeamMemberTests()
         {
-            var mock = new Mock<ITimeService>();
-            mock.Setup(_ => _.GetCurrentDate()).Returns(new DateTime(2021, 8, 11));
-            timeService = mock.Object;
+            InitializeTimeServiceMock();
+
+        }
+
+        private void InitializeTimeServiceMock()
+        {
+            this.timeMock = new Mock<ITimeService>();
+            timeMock.Setup(_ => _.GetCurrentDate()).Returns(new DateTime(2021, 8, 11));
         }
 
         [Fact]
         public void GettingAge()
         {
+            InitializeTimeServiceMock();
             //Assume
+            var timeService = timeMock.Object;
             TeamMember newMember = new TeamMember("UnitTests", timeService);
             newMember.Birthday = new DateTime(1990, 9, 30);
 
@@ -32,6 +39,7 @@ namespace HelloWorldWebApp.Tests
             int age = newMember.GetAge();
 
             //Assert
+            timeMock.Verify(_ => _.GetCurrentDate(), Times.AtMostOnce());
             Assert.Equal(30, age);
         }
 
