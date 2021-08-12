@@ -12,7 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldWebApp.Tests", "HelloWorldWebApp.Tests\HelloWorldWebApp.Tests.csproj", "{F7F619B2-EF18-4875-90CA-9406AEDCAB4F}"
+=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorldWeb.Tests", "HelloWorldWeb.Tests\HelloWorldWeb.Tests.csproj", "{4D8DD8BB-3EDB-418B-8D7D-0FAE266E4DCF}"
+>>>>>>> e2d70b7b61e495957a9f447ca2d8671010d90e96
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
