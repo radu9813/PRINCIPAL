@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HelloWorldWebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,29 @@ namespace HelloWorldWebApp.Controllers
     [ApiController]
     public class WeatherController : ControllerBase
     {
+        private readonly string latitude = "46.770439";
+        private readonly string longitude = "23.591423";
+        private readonly string apiKey = "cc1d9318d81a28a04bf0bd039a22f1a3";
+
         // GET: api/<WeatherController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<DailyWeatherRecord> Get()
         {
-            return new string[] { "value1", "value2" };
+            // lat 46.7700 lon 23.5800 Cluj napoca
+            //https://api.openweathermap.org/data/2.5/onecall?lat=46.7700&lon=23.591423&exclude=hourly,minutely&appid=cc1d9318d81a28a04bf0bd039a22f1a3
+
+
+            var client = new RestClient($"https://api.openweathermap.org/data/2.5/onecall?lat={latitude}&lon={longitude}&exclude=hourly,minutely&appid={apiKey}");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            return ConvertResponseToWeatherForecastList(response.Content);
+
+        }
+
+        private IEnumerable<DailyWeatherRecord> ConvertResponseToWeatherForecastList(string content)
+        {
+            return new DailyWeatherRecord[] { new DailyWeatherRecord(DateTime.Now, 22.0f, WeatherType.Mild) };
         }
 
         // GET api/<WeatherController>/5
@@ -26,22 +46,5 @@ namespace HelloWorldWebApp.Controllers
             return "value";
         }
 
-        // POST api/<WeatherController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<WeatherController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<WeatherController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
