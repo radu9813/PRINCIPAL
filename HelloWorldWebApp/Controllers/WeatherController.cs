@@ -1,5 +1,6 @@
 ﻿using HelloWorldWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,39 @@ namespace HelloWorldWebApp.Controllers
 
         public IEnumerable<DailyWeatherRecord> ConvertResponseToWeatherRecordList(string content)
         {
-            return new DailyWeatherRecord[] { new DailyWeatherRecord(DateTime.Now, 22.0f, WeatherType.Mild) };
+            var json = JObject.Parse(content);
+
+            List<DailyWeatherRecord> result = new List<DailyWeatherRecord>();
+
+            var jsonArray = json["daily"].Take(7);
+            foreach (var item in jsonArray)
+            {
+                DailyWeatherRecord daily = new DailyWeatherRecord(new DateTime(), item.SelectToken("temp").Value<float>("day") - 272.88f, WeatherType.FewClouds);
+                daily.Day = DateTimeOffset.FromUnixTimeSeconds(item.Value<long>("dt")).DateTime.Date;
+                string weather = item.SelectToken("weather")[0].Value<string>("description");
+                daily.Type = Convert(weather);
+                result.Add(daily);
+            }
+
+            return result;
+        }
+
+
+        private WeatherType Convert(String description)
+        {
+            switch (description)
+            {
+                case "few clouds":
+                    return WeatherType.FewClouds;
+                case "light rain":
+                    return WeatherType.LigtRain;
+                case "broken clouds":
+                    return WeatherType.BrokenClouds;
+                case "clear sky":
+                    return WeatherType.ClearSky;
+                default:
+                    throw new Exception("Unknown weather type.");
+            }
         }
 
         // GET api/<WeatherController>/5

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace HelloWorldWebApp.Models
 {
     public enum WeatherType
-    {Freezing, Bracing, Chilly, Cool, Mild, Warm, Balmy, Hot, Sweltering, Scorching, FewClouds
+    {Freezing, Bracing, Chilly, Cool, Mild, Warm, Balmy, Hot, Sweltering, Scorching,
+        FewClouds, LigtRain, ClearSky, BrokenClouds
     }
 }
