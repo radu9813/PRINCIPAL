@@ -1,5 +1,6 @@
 ﻿using HelloWorldWebApp.Models;
 using HelloWorldWebApp.Services;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,9 @@ namespace HelloWorldWebApp.Tests
 
         public TeamMemberTests()
         {
-            timeService = new FakeTimeService();
+            var mock = new Mock<ITimeService>();
+            mock.Setup(_ => _.GetCurrentDate()).Returns(new DateTime(2021, 8, 11));
+            timeService = mock.Object;
         }
 
         [Fact]
@@ -32,12 +35,6 @@ namespace HelloWorldWebApp.Tests
             Assert.Equal(30, age);
         }
 
-        private class FakeTimeService : ITimeService
-        {
-            public DateTime GetCurrentDate()
-            {
-                return new DateTime(2021, 8, 11);
-            }
-        }
+       
     }
 }
