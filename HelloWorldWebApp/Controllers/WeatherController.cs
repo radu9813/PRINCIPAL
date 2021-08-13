@@ -15,9 +15,18 @@ namespace HelloWorldWebApp.Controllers
     [ApiController]
     public class WeatherController : ControllerBase
     {
-        private readonly string latitude = "46.770439";
-        private readonly string longitude = "23.591423";
-        private readonly string apiKey = "cc1d9318d81a28a04bf0bd039a22f1a3";
+        private readonly string latitude;
+        private readonly string longitude;
+        private readonly string apiKey;
+
+        public WeatherController(IWeatherControllerSettings weatherControllerSettings)
+        {
+            longitude = weatherControllerSettings.Longitude;
+            latitude = weatherControllerSettings.Latitude;
+            apiKey = weatherControllerSettings.ApiKey;
+        }
+
+    
 
         // GET: api/<WeatherController>
         [HttpGet]
@@ -32,7 +41,6 @@ namespace HelloWorldWebApp.Controllers
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             return ConvertResponseToWeatherRecordList(response.Content);
-
         }
 
         public IEnumerable<DailyWeatherRecord> ConvertResponseToWeatherRecordList(string content)
@@ -42,18 +50,18 @@ namespace HelloWorldWebApp.Controllers
             List<DailyWeatherRecord> result = new List<DailyWeatherRecord>();
 
             var jsonArray = json["daily"].Take(7);
-            foreach (var item in jsonArray)
-            {
-                DailyWeatherRecord daily = new DailyWeatherRecord(new DateTime(), item.SelectToken("temp").Value<float>("day") - 272.88f, WeatherType.FewClouds);
-                daily.Day = DateTimeOffset.FromUnixTimeSeconds(item.Value<long>("dt")).DateTime.Date;
-                string weather = item.SelectToken("weather")[0].Value<string>("description");
-                daily.Type = Convert(weather);
-                result.Add(daily);
-            }
 
-            return result;
+            return jsonArray.Select(CreateDailyWeatherRecordFromJToken);
         }
 
+        private DailyWeatherRecord CreateDailyWeatherRecordFromJToken(JToken item)
+        {
+            DailyWeatherRecord daily = new DailyWeatherRecord(new DateTime(), item.SelectToken("temp").Value<float>("day") - DailyWeatherRecord.KELVIN_CONST, WeatherType.FewClouds);
+            daily.Day = DateTimeOffset.FromUnixTimeSeconds(item.Value<long>("dt")).DateTime.Date;
+            string weather = item.SelectToken("weather")[0].Value<string>("description");
+            daily.Type = Convert(weather);
+            return daily;
+        }
 
         private WeatherType Convert(String description)
         {
@@ -67,6 +75,8 @@ namespace HelloWorldWebApp.Controllers
                     return WeatherType.BrokenClouds;
                 case "clear sky":
                     return WeatherType.ClearSky;
+                case "moderate rain":
+                    return WeatherType.ModerateRain;
                 default:
                     throw new Exception("Unknown weather type.");
             }

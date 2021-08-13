@@ -7,6 +7,8 @@ namespace HelloWorldWebApp.Models
 {
     public class DailyWeatherRecord
     {
+        public const float KELVIN_CONST = 273.15f;
+
         public DailyWeatherRecord(DateTime day, float temperature, WeatherType type)
         {
             this.Day = day;
