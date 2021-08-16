@@ -11,7 +11,9 @@ using Microsoft.Extensions.Logging;
 
 namespace HelloWorldWebApp.Controllers
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class HomeController : Controller
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         private readonly ILogger<HomeController> logger;
         private readonly ITeamService teamService;

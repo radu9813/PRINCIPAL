@@ -8,7 +8,6 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace HelloWorldWebApp.Controllers
 { /// <summary>
     /// fetch data from weather API
@@ -34,7 +33,6 @@ namespace HelloWorldWebApp.Controllers
         {
             // lat 46.7700 lon 23.5800 Cluj napoca
             // https://api.openweathermap.org/data/2.5/onecall?lat=46.7700&lon=23.591423&exclude=hourly,minutely&appid=cc1d9318d81a28a04bf0bd039a22f1a3
-
             var client = new RestClient($"https://api.openweathermap.org/data/2.5/onecall?lat={latitude}&lon={longitude}&exclude=hourly,minutely&appid={apiKey}");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
@@ -42,6 +40,7 @@ namespace HelloWorldWebApp.Controllers
             return ConvertResponseToWeatherRecordList(response.Content);
         }
 
+        [NonAction]
         public IEnumerable<DailyWeatherRecord> ConvertResponseToWeatherRecordList(string content)
         {
             var json = JObject.Parse(content);
@@ -51,6 +50,13 @@ namespace HelloWorldWebApp.Controllers
             var jsonArray = json["daily"].Take(7);
 
             return jsonArray.Select(CreateDailyWeatherRecordFromJToken);
+        }
+
+        // GET api/<WeatherController>/5
+        [HttpGet("{id}")]
+        public string Get(int id)
+        {
+            return "value";
         }
 
         private DailyWeatherRecord CreateDailyWeatherRecordFromJToken(JToken item)
@@ -76,17 +82,11 @@ namespace HelloWorldWebApp.Controllers
                     return WeatherType.ClearSky;
                 case "moderate rain":
                     return WeatherType.ModerateRain;
+                case "overcast clouds":
+                    return WeatherType.OvercastCluds;
                 default:
-                    throw new Exception("Unknown weather type.");
+                    throw new Exception("Unknown weather type " + description);
             }
         }
-
-        // GET api/<WeatherController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
     }
 }

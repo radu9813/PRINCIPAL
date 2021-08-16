@@ -9,7 +9,6 @@ namespace HelloWorldWebApp.Controllers
             ApiKey = conf["WeatherForecast:ApiKey"];
             Longitude = conf["WeatherForecast:Longitude"];
             Latitude = conf["WeatherForecast:Latitude"];
-
         }
 
         public string ApiKey { get; }
