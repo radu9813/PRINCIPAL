@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <ApplicationIcon />
+    <Win32Resource />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Projects\sshHelloWorld\HelloWorldWebApp\HelloWorldWebApp.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +20,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
 		<AdditionalFiles Include="..\stylecop.json" />	
 	</ItemGroup>
 </Project>

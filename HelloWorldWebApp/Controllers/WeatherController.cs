@@ -1,16 +1,18 @@
-﻿using HelloWorldWebApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelloWorldWebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HelloWorldWebApp.Controllers
-{
+{ /// <summary>
+    /// fetch data from weather API
+  /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class WeatherController : ControllerBase
@@ -26,15 +28,12 @@ namespace HelloWorldWebApp.Controllers
             apiKey = weatherControllerSettings.ApiKey;
         }
 
-    
-
         // GET: api/<WeatherController>
         [HttpGet]
         public IEnumerable<DailyWeatherRecord> Get()
         {
             // lat 46.7700 lon 23.5800 Cluj napoca
-            //https://api.openweathermap.org/data/2.5/onecall?lat=46.7700&lon=23.591423&exclude=hourly,minutely&appid=cc1d9318d81a28a04bf0bd039a22f1a3
-
+            // https://api.openweathermap.org/data/2.5/onecall?lat=46.7700&lon=23.591423&exclude=hourly,minutely&appid=cc1d9318d81a28a04bf0bd039a22f1a3
 
             var client = new RestClient($"https://api.openweathermap.org/data/2.5/onecall?lat={latitude}&lon={longitude}&exclude=hourly,minutely&appid={apiKey}");
             client.Timeout = -1;

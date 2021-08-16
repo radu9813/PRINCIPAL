@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HelloWorldWebApp</name>
+    </assembly>
+    <members>
+        <member name="T:HelloWorldWebApp.Controllers.WeatherController">
+            <summary>
+            fetch data from weather API
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -23,5 +23,10 @@
   <ItemGroup>
     <ProjectReference Include="..\HelloWorldWebApp\HelloWorldWebApp.csproj" />
   </ItemGroup>
-
+	<ItemGroup>
+		<None Remove="TestData/ContetWeatherApi.json"/>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="TestData/ContetWeatherApi.json"/>
+	</ItemGroup>
 </Project>
