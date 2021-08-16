@@ -40,6 +40,21 @@ namespace HelloWorldWebApp.Controllers
             return ConvertResponseToWeatherRecordList(response.Content);
         }
 
+        /// <summary>
+        /// Get a weather forecast for the day in specified amount of days from now.
+        /// </summary>
+        /// <param name="index">Amount of days from now (e.g. 0 is the current day, index is from 0 - 7).</param>
+        /// <returns>The weather forecast.</returns>
+        [HttpGet("{index}")]
+        public DailyWeatherRecord Get(int index)
+        {
+            var client = new RestClient($"https://api.openweathermap.org/data/2.5/onecall?lat={latitude}&lon={longitude}&exclude=hourly,minutely&appid={apiKey}");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            return ConvertResponseToWeatherRecordList(response.Content).ElementAt(index);
+        }
+
         [NonAction]
         public IEnumerable<DailyWeatherRecord> ConvertResponseToWeatherRecordList(string content)
         {
@@ -52,12 +67,7 @@ namespace HelloWorldWebApp.Controllers
             return jsonArray.Select(CreateDailyWeatherRecordFromJToken);
         }
 
-        // GET api/<WeatherController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+
 
         private DailyWeatherRecord CreateDailyWeatherRecordFromJToken(JToken item)
         {
