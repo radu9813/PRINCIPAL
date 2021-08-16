@@ -11,9 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HelloWorldWebApp.Controllers
 {
-
     public class HomeController : Controller
-
     {
         private readonly ILogger<HomeController> logger;
         private readonly ITeamService teamService;

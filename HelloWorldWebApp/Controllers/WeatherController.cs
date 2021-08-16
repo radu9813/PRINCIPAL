@@ -10,8 +10,9 @@ using RestSharp;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace HelloWorldWebApp.Controllers
 { /// <summary>
-    /// fetch data from weather API
-  /// </summary>
+/// Fetch data from weather api.
+/// <see href="https://openweathermap.org/api"/>
+/// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class WeatherController : ControllerBase
@@ -27,7 +28,10 @@ namespace HelloWorldWebApp.Controllers
             apiKey = weatherControllerSettings.ApiKey;
         }
 
-        // GET: api/<WeatherController>
+        /// <summary>
+        /// https://openweathermap.org/api
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<DailyWeatherRecord> Get()
         {
@@ -67,11 +71,9 @@ namespace HelloWorldWebApp.Controllers
             return jsonArray.Select(CreateDailyWeatherRecordFromJToken);
         }
 
-
-
         private DailyWeatherRecord CreateDailyWeatherRecordFromJToken(JToken item)
         {
-            DailyWeatherRecord daily = new DailyWeatherRecord(new DateTime(), item.SelectToken("temp").Value<float>("day") - DailyWeatherRecord.KELVIN_CONST, WeatherType.FewClouds);
+            DailyWeatherRecord daily = new DailyWeatherRecord(new DateTime(), item.SelectToken("temp").Value<float>("day") - DailyWeatherRecord.KELVINCONST, WeatherType.FewClouds);
             daily.Day = DateTimeOffset.FromUnixTimeSeconds(item.Value<long>("dt")).DateTime.Date;
             string weather = item.SelectToken("weather")[0].Value<string>("description");
             daily.Type = Convert(weather);

@@ -4,6 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <ApplicationIcon />
     <Win32Resource />
+    <UserSecretsId>8dfd83ee-d9e2-43b6-82f8-0c4f017c2979</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,6 +17,7 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="RestSharp" Version="106.12.0" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
@@ -22,6 +25,5 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
-		<AdditionalFiles Include="..\stylecop.json" />	
 	</ItemGroup>
 </Project>
