@@ -52,11 +52,7 @@ namespace HelloWorldWebApp.Controllers
         [HttpGet("{index}")]
         public DailyWeatherRecord Get(int index)
         {
-            var client = new RestClient($"https://api.openweathermap.org/data/2.5/onecall?lat={latitude}&lon={longitude}&exclude=hourly,minutely&appid={apiKey}");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            return ConvertResponseToWeatherRecordList(response.Content).ElementAt(index);
+            return Get().ElementAt(index);
         }
 
         [NonAction]
