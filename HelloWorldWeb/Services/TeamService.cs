@@ -34,7 +34,7 @@ namespace HelloWorldWeb.Services
         public TeamMember GetTeamMemberByID(int id)
         {
             foreach (TeamMember teamMember in this.teamInfo.TeamMembers) {
-                    if (id == teamMember.ID)
+                    if (id == teamMember.Id)
                     {
                         return teamMember;
                     }
@@ -45,14 +45,15 @@ namespace HelloWorldWeb.Services
 
         public void UpdateMemberName(int memberId, string name)
         {
-            int index = teamInfo.TeamMembers.FindIndex(element => element.ID == memberId);
+            int index = teamInfo.TeamMembers.FindIndex(element => element.Id == memberId);
             teamInfo.TeamMembers[index].Name = name;
         }
         public int AddTeamMember(string name)
         {
-            TeamMember teamMember = new TeamMember(name);
+            TeamMember teamMember = new TeamMember();
+            teamMember.Name = name;
             this.teamInfo.TeamMembers.Add(teamMember);
-            return teamMember.ID;
+            return teamMember.Id;
         }
 
         public void RemoveMember(int memberIndex)

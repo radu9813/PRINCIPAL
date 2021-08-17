@@ -19,14 +19,14 @@
         {
             var member = Model.TeamMembers[i].Name;
 
-            <li class="member" member-id =@Model.TeamMembers[i].ID>
+            <li class="member" member-id =@Model.TeamMembers[i].Id>
                 <span class="name">@member</span>
                 <span>
                     <i class="pencil fa fa-pencil" aria-hidden="true"></i>
                 </span>
 
                 <span>
-                    <i class="delete fa fa-times" onclick=deleteMember(@Model.TeamMembers[i].ID) aria-hidden="true"></i>
+                    <i class="delete fa fa-times" onclick=deleteMember(@Model.TeamMembers[i].Id) aria-hidden="true"></i>
                 </span>
             </li>
         }
