@@ -16,13 +16,11 @@ namespace HelloWorldWeb.Services
             _context = context;
         }
 
-        public int AddTeamMember(string name)
+        public int AddTeamMember(TeamMember member)
         {
-            TeamMember teamMember = new TeamMember();
-            teamMember.Name = name;
-            _context.Add(teamMember);
+            _context.Add(member);
             _context.SaveChanges();
-            return teamMember.Id;
+            return member.Id;
         }
 
         public TeamInfo GetTeamInfo()

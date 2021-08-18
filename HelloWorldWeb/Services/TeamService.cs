@@ -17,13 +17,6 @@ namespace HelloWorldWeb.Services
                 Name = "Team 3",
                 TeamMembers = new List<TeamMember>(),
             };
-
-            this.AddTeamMember("Teona");
-            this.AddTeamMember("Radu");
-            this.AddTeamMember("George");
-            this.AddTeamMember("Dragos");
-            this.AddTeamMember("Claudia");
-            this.AddTeamMember("Leon");
         }
 
         public TeamInfo GetTeamInfo()
@@ -48,12 +41,10 @@ namespace HelloWorldWeb.Services
             int index = teamInfo.TeamMembers.FindIndex(element => element.Id == memberId);
             teamInfo.TeamMembers[index].Name = name;
         }
-        public int AddTeamMember(string name)
+        public int AddTeamMember(TeamMember member)
         {
-            TeamMember teamMember = new TeamMember();
-            teamMember.Name = name;
-            this.teamInfo.TeamMembers.Add(teamMember);
-            return teamMember.Id;
+            this.teamInfo.TeamMembers.Add(member);
+            return member.Id;
         }
 
         public void RemoveMember(int memberIndex)
