@@ -13,6 +13,7 @@ namespace HelloWorldWeb
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using HelloWorldWeb.Data;
+    using System;
 
     public class Startup
     {
@@ -21,14 +22,29 @@ namespace HelloWorldWeb
             this.Configuration = configuration;
         }
 
+        public static string ConvertHerokuConnectionToASPNET(string herokuConnectionString)
+        {
+            var databaseUri = new Uri(herokuConnectionString);
+            string[] userInfo = databaseUri.UserInfo.Split(":");
+            return $"Host={databaseUri.Host};Port={databaseUri.Port};Username={userInfo[0]};Password={userInfo[1]};Database={databaseUri.LocalPath.Substring(1)};Pooling=true;SSL Mode=Require;TrustServerCertificate=True;";
+        }
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<ApplicationDbContext>(options =>
+        {   if (Environment.GetEnvironmentVariable("DATABASE_URL") != null)
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    ConvertHerokuConnectionToASPNET(Environment.GetEnvironmentVariable("DATABASE_URL"))));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseNpgsql(
+                        Configuration.GetConnectionString("DefaultConnection")));
+            }
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
