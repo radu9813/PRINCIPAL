@@ -26,5 +26,5 @@ namespace HelloWorldWebApp
                     webBuilder.UseStartup<Startup>()
                     .UseUrls("http://*:" + port);
                 });
+        }
     }
-}
