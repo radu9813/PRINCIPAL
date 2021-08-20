@@ -53,6 +53,11 @@ namespace HelloWorldWebApp.Controllers
             return this.View(teamService.GetTeamInfo());
         }
 
+        public IActionResult Chat()
+        {
+            return this.View();
+        }
+
         public IActionResult Privacy()
         {
             return this.View();

@@ -48,11 +48,16 @@ namespace CSharpFeatures
                 var coffee = recipe(grains, milk, water, sugar);
                 return coffee;
             }
-            catch (Exception)
+            catch (RecipeUnavailableException e)
             {
-                Console.WriteLine("Sorry your order could not be completed");
+                Console.WriteLine(e.StackTrace);
                 return null;
                 
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Something went wrong, see exception details");
+                return null;
             }
             finally
             {
@@ -64,7 +69,7 @@ namespace CSharpFeatures
 
         static Coffee Espresso(string grains, string milk, string water, string sugar)
         {
-            throw new RecipeUnavailableException();
+            throw new ApplicationException();
         }
 
         static Coffee FlatWhite(string grains, string milk, string water, string sugar)
