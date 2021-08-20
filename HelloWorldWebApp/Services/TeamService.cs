@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HelloWorldWebApp.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HelloWorldWebApp.Services
 {
@@ -7,9 +8,11 @@ namespace HelloWorldWebApp.Services
     {
         private readonly TeamInfo teamInfo;
         private readonly ITimeService timeService;
+        private readonly IHubContext<MessageHub> messageHub;
 
-        public TeamService()
+        public TeamService(IHubContext<MessageHub> messageHubContext)
         {
+            messageHub = messageHubContext;
             this.teamInfo = new TeamInfo
             {
                 Name = "Team 3",
@@ -47,7 +50,7 @@ namespace HelloWorldWebApp.Services
         {
             TeamMember newMember = new TeamMember(name, timeService);
             teamInfo.TeamMembers.Add(newMember);
-
+            messageHub.Clients.All.SendAsync("NewTeamMemberAdded",name,newMember.Id);
             return newMember.Id;
         }
 
