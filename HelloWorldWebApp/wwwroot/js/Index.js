@@ -8,6 +8,14 @@ connection.on("NewTeamMemberAdded", function (name, memberId) {
     createNewcomer(name, memberId);
 });
 
+connection.on("TeamMemberDeleted", function (memberId) {
+    removeTeamMemberFromList(memberId);
+});
+
+connection.on('UpdatedTeamMember', function (memberId,name) {
+    updateTeamMemberFromList(memberId, name);
+})
+
 connection.start().then(function () {
     console.log("signalr connected");
 }).catch(function (err) {
@@ -27,13 +35,6 @@ $(document).ready(function () {
             },
             success: function (result) {
                 // Remember string interpolation
-                $("#teamMembers").append(
-                    `<li class="member" member-id=${result}>
-                        <span class="name" >${newcomerName}</span>
-                        <span class="delete fa fa-remove" onclick="deleteMember(${result})"></span>
-                        <span class="pencil fa fa-pencil"></span>
-                    </li>`);
-
                 $("#nameField").val("");
                 document.getElementById("addMembersButton").disabled = true;
             }
@@ -52,7 +53,6 @@ $(document).ready(function () {
                 name: newName
             },
             success: function (result) {
-                location.reload();
             }
         })
     });
@@ -76,7 +76,7 @@ function deleteMember(index) {
             memberIndex: index
         },
         success: function (result) {
-            location.reload();
+           
         }
     })
 }
@@ -105,11 +105,18 @@ function createNewcomer(name, id) {
     $("#teamMembers").append(`
             <li class="member" member-id="${id}">
                 <span class="name" >${name}</span>
-                <span class="delete fa fa-remove" onclick="deleteMember(@member.Id)"></span>
+                <span class="delete fa fa-remove" onclick="deleteMember(${id})"></span>
                 <span class="pencil fa fa-pencil"></span>
             </li>`
     );
 }
+
+
 $("#clear").click(function () {
     $("#newcomer").val("");
 })
+
+const removeTeamMemberFromList = (teamMemberId) => $(`li[member-id=${teamMemberId}]`).remove();
+
+const updateTeamMemberFromList = (teamMemberId, teamMemberName) => $(`li[member-id=${teamMemberId}]`).children(".name").text(teamMemberName)
+

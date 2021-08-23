@@ -44,6 +44,7 @@ namespace HelloWorldWebApp.Services
         {
             TeamMember member = GetMemberById(memberId);
             teamInfo.TeamMembers.Remove(member);
+            this.broadcastService.TeamMemberDeleted(memberId);
         }
 
         public int AddTeamMember(string name)
@@ -58,6 +59,7 @@ namespace HelloWorldWebApp.Services
 {
             TeamMember member = GetMemberById(memberId);
             member.Name = name;
+            broadcastService.UpdatedTeamMember(memberId, name);
         }
 
         public TeamMember GetMemberById(int memberId)
