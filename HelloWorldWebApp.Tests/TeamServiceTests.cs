@@ -2,6 +2,7 @@ using HelloWorldWebApp.Services;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 using System;
+using System.Threading;
 using Xunit;
 
 namespace HelloWorldWebApp.Tests
@@ -69,18 +70,33 @@ namespace HelloWorldWebApp.Tests
             int lastIndex = teamService.GetTeamInfo().TeamMembers.Count;
             Assert.NotEqual("Test", teamService.GetTeamInfo().TeamMembers[lastIndex - 1].Name);
         }
+        [Fact]
+        public void CheckLine60()
+        {   //Assume
+            InitializeMessageHubMock();
+            var messageHubMock = this.messageHub.Object;
+
+            //Act
+            messageHubMock.Clients.All.SendAsync("NewTeamMemberAdded", "Raducu", 2);
+
+            //Assert
+            hubAllClients.Verify(hubAllClients => hubAllClients.SendAsync("NewTeamMemberAdded", "Raducu", 2, It.IsAny<CancellationToken>()),Times.Once(),);
+                
+        }
+        private Mock<IHubClients> hubClientsMock;
+        private Mock<IClientProxy> hubAllClients;
 
         private void InitializeMessageHubMock()
         {
             // https://www.codeproject.com/Articles/1266538/Testing-SignalR-Hubs-in-ASP-NET-Core-2-1
-            Mock<IClientProxy> hubAllClients = new Mock<IClientProxy>();
-            Mock<IHubClients> hubClients = new Mock<IHubClients>();
-            hubClients.Setup(_ => _.All).Returns(hubAllClients.Object);
+            hubAllClients = new Mock<IClientProxy>();
+            hubClientsMock = new Mock<IHubClients>();
+            hubClientsMock.Setup(_ => _.All).Returns(hubAllClients.Object);
             messageHub = new Mock<IHubContext<MessageHub>>();
 
 
 
-            messageHub.SetupGet(_ => _.Clients).Returns(hubClients.Object);
+            messageHub.SetupGet(_ => _.Clients).Returns(hubClientsMock.Object);
         }
 
         IHubContext<MessageHub> GetMockedMessageHub()
