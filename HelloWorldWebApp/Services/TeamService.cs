@@ -50,7 +50,7 @@ namespace HelloWorldWebApp.Services
         {
             TeamMember newMember = new TeamMember(name, timeService);
             teamInfo.TeamMembers.Add(newMember);
-            messageHub.Clients.All.SendAsync("NewTeamMemberAdded",name,newMember.Id);
+            messageHub.Clients.All.SendAsync("NewTeamMemberAdded", name, newMember.Id);
             return newMember.Id;
         }
 

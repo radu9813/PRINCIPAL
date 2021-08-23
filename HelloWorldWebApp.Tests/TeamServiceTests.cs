@@ -7,15 +7,14 @@ using Xunit;
 namespace HelloWorldWebApp.Tests
 {
     public class TeamServiceTests
-    {
-        
-      /*  [Fact]
-         public void AddTeamMemberToTheTeam()
+    {   
+        private Mock<IHubContext<MessageHub>> messageHub = null;
+
+        [Fact]
+        public void AddTeamMemberToTheTeam()
         {
             //Assume
-            var hubSettings = new Mock<IHubContext<MessageHub>>();
-            var mockClients = new Mock<IHubClients>();
-            var teamService = new TeamService(hubSettings.Object);
+            var teamService = new TeamService(GetMockedMessageHub());
             //Act
             int initialCount = teamService.GetTeamInfo().TeamMembers.Count;
             teamService.AddTeamMember("George");
@@ -28,7 +27,7 @@ namespace HelloWorldWebApp.Tests
         public void RemoveMemberFromTheTeam()
         {
             // Assume
-            ITeamService teamService = new TeamService(null);
+            ITeamService teamService = new TeamService(GetMockedMessageHub());
             int initialCount = teamService.GetTeamInfo().TeamMembers.Count;
             var id = teamService.GetTeamInfo().TeamMembers[0].Id;
 
@@ -43,7 +42,7 @@ namespace HelloWorldWebApp.Tests
         public void UpdateMemberName()
         {
             // Assume
-            ITeamService teamService = new TeamService(null);
+            ITeamService teamService = new TeamService(GetMockedMessageHub());
             var id = teamService.GetTeamInfo().TeamMembers[0].Id;
 
             // Act
@@ -58,7 +57,7 @@ namespace HelloWorldWebApp.Tests
         public void CheckIdProblem()
         {
             // Assume
-            ITeamService teamService = new TeamService(null);
+            ITeamService teamService = new TeamService(GetMockedMessageHub());
             var id = teamService.GetTeamInfo().TeamMembers[0].Id;
 
             // Act
@@ -69,6 +68,31 @@ namespace HelloWorldWebApp.Tests
             // Assert
             int lastIndex = teamService.GetTeamInfo().TeamMembers.Count;
             Assert.NotEqual("Test", teamService.GetTeamInfo().TeamMembers[lastIndex - 1].Name);
-        }*/
+        }
+
+        private void InitializeMessageHubMock()
+        {
+            // https://www.codeproject.com/Articles/1266538/Testing-SignalR-Hubs-in-ASP-NET-Core-2-1
+            Mock<IClientProxy> hubAllClients = new Mock<IClientProxy>();
+            Mock<IHubClients> hubClients = new Mock<IHubClients>();
+            hubClients.Setup(_ => _.All).Returns(hubAllClients.Object);
+            messageHub = new Mock<IHubContext<MessageHub>>();
+
+
+
+            messageHub.SetupGet(_ => _.Clients).Returns(hubClients.Object);
+        }
+
+        IHubContext<MessageHub> GetMockedMessageHub()
+        {
+            if (messageHub == null)
+            {
+                InitializeMessageHubMock();
+            }
+
+
+
+            return messageHub.Object;
+        }
     }
 }
