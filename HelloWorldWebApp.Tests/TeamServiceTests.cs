@@ -14,20 +14,23 @@ namespace HelloWorldWebApp.Tests
         public void AddTeamMemberToTheTeam()
         {
             //Assume
-            var teamService = new TeamService(GetMockedMessageHub());
+            Mock<IBroadcastService> broadcastServiceMock = new Mock<IBroadcastService>(); 
+            var teamService = new TeamService(broadcastServiceMock.Object);
             //Act
             int initialCount = teamService.GetTeamInfo().TeamMembers.Count;
             teamService.AddTeamMember("George");
 
             //Assert
             Assert.Equal(initialCount + 1, teamService.GetTeamInfo().TeamMembers.Count);
+            broadcastServiceMock.Verify(_ => _.NewTeamMemberAdded("George", It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
         public void RemoveMemberFromTheTeam()
         {
             // Assume
-            ITeamService teamService = new TeamService(GetMockedMessageHub());
+            Mock<IBroadcastService> broadcastServiceMock = new Mock<IBroadcastService>();
+            var teamService = new TeamService(broadcastServiceMock.Object);
             int initialCount = teamService.GetTeamInfo().TeamMembers.Count;
             var id = teamService.GetTeamInfo().TeamMembers[0].Id;
 
@@ -42,7 +45,8 @@ namespace HelloWorldWebApp.Tests
         public void UpdateMemberName()
         {
             // Assume
-            ITeamService teamService = new TeamService(GetMockedMessageHub());
+            Mock<IBroadcastService> broadcastServiceMock = new Mock<IBroadcastService>();
+            var teamService = new TeamService(broadcastServiceMock.Object);
             var id = teamService.GetTeamInfo().TeamMembers[0].Id;
 
             // Act
@@ -57,7 +61,8 @@ namespace HelloWorldWebApp.Tests
         public void CheckIdProblem()
         {
             // Assume
-            ITeamService teamService = new TeamService(GetMockedMessageHub());
+            Mock<IBroadcastService> broadcastServiceMock = new Mock<IBroadcastService>();
+            var teamService = new TeamService(broadcastServiceMock.Object);
             var id = teamService.GetTeamInfo().TeamMembers[0].Id;
 
             // Act
