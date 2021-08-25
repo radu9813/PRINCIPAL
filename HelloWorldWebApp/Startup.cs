@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -47,7 +46,6 @@ namespace HelloWorldWebApp
             services.AddScoped<ITeamService, DbTeamService>();
             services.AddSignalR();
             services.AddControllersWithViews();
-            services.AddSingleton<ITeamService, TeamService>();
             services.AddSingleton<ITimeService, TimeService>();
             services.AddSingleton<IBroadcastService, BroadcastService>();
             services.AddSingleton<IWeatherControllerSettings, WeatherControllerSettings>();
@@ -112,7 +110,7 @@ namespace HelloWorldWebApp
             return result;
 
                
-            });
+           
         }
     }
 }

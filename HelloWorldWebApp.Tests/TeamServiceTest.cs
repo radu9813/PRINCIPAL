@@ -1,4 +1,5 @@
 using HelloWorldWebApp.Services;
+using Moq;
 using System;
 using Xunit;
 
@@ -10,7 +11,8 @@ namespace HelloWorldWebApp.Tests
         public void AddTeamMemberToTheTeam()
         {
             //Assume
-            ITeamService teamService = new TeamService();
+            Mock<IBroadcastService> broadcastServiceMock = new Mock<IBroadcastService>();
+            var teamService = new TeamService(broadcastServiceMock.Object);
 
             //Act
             teamService.AddTeamMember("George");
@@ -23,7 +25,8 @@ namespace HelloWorldWebApp.Tests
         public void RemoveMemberFromTheTeam()
         {
             // Assume
-            ITeamService teamService = new TeamService();
+            Mock<IBroadcastService> broadcastServiceMock = new Mock<IBroadcastService>();
+            var teamService = new TeamService(broadcastServiceMock.Object);
 
             // Act
             int initialCount = teamService.GetTeamInfo().TeamMembers.Count;
@@ -38,7 +41,8 @@ namespace HelloWorldWebApp.Tests
         public void UpdateMemberName()
         {
             // Assume
-            ITeamService teamService = new TeamService();
+            Mock<IBroadcastService> broadcastServiceMock = new Mock<IBroadcastService>();
+            var teamService = new TeamService(broadcastServiceMock.Object);
             var teamMember = teamService.GetTeamInfo().TeamMembers[0];
 
             // Act

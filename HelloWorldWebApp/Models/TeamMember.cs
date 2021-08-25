@@ -16,10 +16,6 @@ namespace HelloWorldWebApp.Models
 
         public DateTime Birthday { get; set; }
 
-        public int GetAge()
-        {
-            var age = timeService.GetCurrentDate().Subtract(Birthday).Days;
-            return age / 365;
-        }
+        
     }
 }

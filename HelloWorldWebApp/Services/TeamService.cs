@@ -51,7 +51,8 @@ namespace HelloWorldWebApp.Services
         public int AddTeamMember(string name)
         {
 
-            TeamMember newMember = new TeamMember(name, timeService);
+            TeamMember newMember = new TeamMember();
+            newMember.Name = name;
             teamInfo.TeamMembers.Add(newMember);
             broadcastService.NewTeamMemberAdded(name, newMember.Id);
             return newMember.Id;

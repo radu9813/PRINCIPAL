@@ -10,9 +10,12 @@ namespace HelloWorldWebApp.Services
     public class DbTeamService : ITeamService
     {
         private readonly ApplicationDbContext context;
-
-        public DbTeamService(ApplicationDbContext context)
+        private readonly ITimeService timeService;
+        private readonly IBroadcastService broadcastService;
+        public DbTeamService(ApplicationDbContext context, IBroadcastService broadcastService, ITimeService timeService)
         {
+            this.broadcastService = broadcastService;
+            this.timeService = timeService;
             this.context = context;
         }
 
@@ -21,7 +24,7 @@ namespace HelloWorldWebApp.Services
             TeamMember newMember = new TeamMember() { Name = name };
             context.Add(newMember);
             context.SaveChanges();
-
+            broadcastService.NewTeamMemberAdded(name, newMember.Id);
             return newMember.Id;
         }
 
@@ -41,14 +44,21 @@ namespace HelloWorldWebApp.Services
             var teamMember = GetMemberById(memberId);
             context.TeamMembers.Remove(teamMember);
             context.SaveChanges();
+            this.broadcastService.TeamMemberDeleted(memberId);
         }
 
         public void UpdateMemberName(int memberId, string name)
         {
             var teamMember = GetMemberById(memberId);
             teamMember.Name = name;
-
             context.SaveChanges();
+            broadcastService.UpdatedTeamMember(memberId, name);
+        }
+
+        public int GetAge(int memberId)
+        {
+            var age = timeService.GetCurrentDate().Subtract(GetMemberById(memberId).Birthday).Days;
+            return age / 365;
         }
     }
 }

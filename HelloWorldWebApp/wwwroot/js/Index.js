@@ -20,6 +20,10 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
+const removeTeamMemberFromList = (teamMemberId) => $(`li[member-id=${teamMemberId}]`).remove();
+
+const updateTeamMemberFromList = (teamMemberId, teamMemberName) => $(`li[member-id=${teamMemberId}]`).children(".name").text(teamMemberName);
+
 $(document).ready(function () {
     // see https://api.jquery.com/click/
     $("#addMembersButton").click(function () {
@@ -33,14 +37,6 @@ $(document).ready(function () {
             },
             success: function (result) {
                 // Remember string interpolation
-
-                $("#teamMembers").append(
-                    `<li class="member" member-id=${result}>
-                        <span class="name" >${newcomerName}</span>
-                        <span class="delete fa fa-remove" onclick="deleteMember(${result})"></span>
-                        <span class="pencil fa fa-pencil"></span>
-                    </li>`);
-
                 $("#nameField").val("");
                 document.getElementById("addMembersButton").disabled = true;
             }
@@ -87,8 +83,6 @@ function deleteMember(index) {
     })
 }
 
-(function () {
-
     $('#nameField').on('change textInput input', function () {
         var inputVal = this.value;
         if (inputVal != "") {
@@ -97,31 +91,27 @@ function deleteMember(index) {
             document.getElementById("addMembersButton").disabled = true;
         }
     });
-}());
 
-(function () {
+
+
     $("#clearButton").click(function () {
         document.getElementById("nameField").value = "";
     });
 
 
-function createNewcomer(name, id) {
-    // Remember string interpolation
-    $("#teamMembers").append(`
+    function createNewcomer(name, id) {
+        // Remember string interpolation
+        $("#teamMembers").append(`
             <li class="member" member-id="${id}">
                 <span class="name" >${name}</span>
                 <span class="delete fa fa-remove" onclick="deleteMember(${id})"></span>
                 <span class="pencil fa fa-pencil"></span>
             </li>`
-    );
-}
+        );
+    }
 
 
-$("#clear").click(function () {
-    $("#newcomer").val("");
-})
-
-const removeTeamMemberFromList = (teamMemberId) => $(`li[member-id=${teamMemberId}]`).remove();
-
-const updateTeamMemberFromList = (teamMemberId, teamMemberName) => $(`li[member-id=${teamMemberId}]`).children(".name").text(teamMemberName)
+    $("#clear").click(function () {
+        $("#newcomer").val("");
+    })
 
