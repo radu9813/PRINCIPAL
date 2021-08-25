@@ -1,15 +1,20 @@
 ﻿using System.Collections.Generic;
 using HelloWorldWebApp.Models;
+using Microsoft.AspNetCore.SignalR;
+
 
 namespace HelloWorldWebApp.Services
 {
     public class TeamService : ITeamService
     {
         private readonly TeamInfo teamInfo;
+        private readonly ITimeService timeService;
+        private readonly IBroadcastService broadcastService;
 
-        public TeamService()
+        public TeamService(IBroadcastService broadcastService)
         {
-            teamInfo = new TeamInfo
+            this.broadcastService = broadcastService;
+            this.teamInfo = new TeamInfo
             {
                 Name = "Team 3",
                 TeamMembers = new List<TeamMember>(),
@@ -40,13 +45,15 @@ namespace HelloWorldWebApp.Services
         {
             TeamMember member = GetMemberById(memberId);
             teamInfo.TeamMembers.Remove(member);
+            this.broadcastService.TeamMemberDeleted(memberId);
         }
 
         public int AddTeamMember(string name)
         {
-            var newMember = new TeamMember() { Name = name };
-            teamInfo.TeamMembers.Add(newMember);
 
+            TeamMember newMember = new TeamMember(name, timeService);
+            teamInfo.TeamMembers.Add(newMember);
+            broadcastService.NewTeamMemberAdded(name, newMember.Id);
             return newMember.Id;
         }
 
@@ -54,6 +61,7 @@ namespace HelloWorldWebApp.Services
         {
             TeamMember member = GetMemberById(memberId);
             member.Name = name;
+            broadcastService.UpdatedTeamMember(memberId, name);
         }
 
         public TeamMember GetMemberById(int memberId)

@@ -1,4 +1,25 @@
 ﻿// This JS file now uses jQuery. Pls see here: https://jquery.com/
+var connection = new signalR.HubConnectionBuilder().withUrl("/messagehub").build();
+
+connection.on("NewTeamMemberAdded", function (name, memberId) {
+    console.log(`New team member added: ${name}, ${memberId}`);
+    createNewcomer(name, memberId);
+});
+
+connection.on("TeamMemberDeleted", function (memberId) {
+    removeTeamMemberFromList(memberId);
+});
+
+connection.on('UpdatedTeamMember', function (memberId,name) {
+    updateTeamMemberFromList(memberId, name);
+})
+
+connection.start().then(function () {
+    console.log("signalr connected");
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+
 $(document).ready(function () {
     // see https://api.jquery.com/click/
     $("#addMembersButton").click(function () {
@@ -12,6 +33,7 @@ $(document).ready(function () {
             },
             success: function (result) {
                 // Remember string interpolation
+
                 $("#teamMembers").append(
                     `<li class="member" member-id=${result}>
                         <span class="name" >${newcomerName}</span>
@@ -37,7 +59,6 @@ $(document).ready(function () {
                 name: newName
             },
             success: function (result) {
-                location.reload();
             }
         })
     });
@@ -61,7 +82,7 @@ function deleteMember(index) {
             memberIndex: index
         },
         success: function (result) {
-            location.reload();
+           
         }
     })
 }
@@ -82,4 +103,25 @@ function deleteMember(index) {
     $("#clearButton").click(function () {
         document.getElementById("nameField").value = "";
     });
-}());
+
+
+function createNewcomer(name, id) {
+    // Remember string interpolation
+    $("#teamMembers").append(`
+            <li class="member" member-id="${id}">
+                <span class="name" >${name}</span>
+                <span class="delete fa fa-remove" onclick="deleteMember(${id})"></span>
+                <span class="pencil fa fa-pencil"></span>
+            </li>`
+    );
+}
+
+
+$("#clear").click(function () {
+    $("#newcomer").val("");
+})
+
+const removeTeamMemberFromList = (teamMemberId) => $(`li[member-id=${teamMemberId}]`).remove();
+
+const updateTeamMemberFromList = (teamMemberId, teamMemberName) => $(`li[member-id=${teamMemberId}]`).children(".name").text(teamMemberName)
+

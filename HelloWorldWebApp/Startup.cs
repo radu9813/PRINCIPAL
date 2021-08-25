@@ -3,16 +3,21 @@
 // </copyright>
 
 using HelloWorldWebApp.Data;
+using System;
+using System.IO;
+using System.Reflection;
+using HelloWorldWebApp.Controllers;
 using HelloWorldWebApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using Microsoft.OpenApi.Models;
 
 namespace HelloWorldWebApp
 {
@@ -20,7 +25,9 @@ namespace HelloWorldWebApp
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+          
+            this.Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -38,6 +45,21 @@ namespace HelloWorldWebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddScoped<ITeamService, DbTeamService>();
+            services.AddSignalR();
+            services.AddControllersWithViews();
+            services.AddSingleton<ITeamService, TeamService>();
+            services.AddSingleton<ITimeService, TimeService>();
+            services.AddSingleton<IBroadcastService, BroadcastService>();
+            services.AddSingleton<IWeatherControllerSettings, WeatherControllerSettings>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hello World API", Version = "v1" });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +69,8 @@ namespace HelloWorldWebApp
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
             else
             {
@@ -61,7 +85,6 @@ namespace HelloWorldWebApp
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -69,6 +92,7 @@ namespace HelloWorldWebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<MessageHub>("/messagehub");
                 endpoints.MapRazorPages();
             });
         }
@@ -86,6 +110,9 @@ namespace HelloWorldWebApp
 
             string result = $"Host={host};Port={port};Database={database};User Id={userId};Password={password};Pooling=true;SSL Mode=Require;TrustServerCertificate=True;Include Error Detail=True";
             return result;
+
+               
+            });
         }
     }
 }

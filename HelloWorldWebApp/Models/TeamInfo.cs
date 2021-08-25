@@ -8,6 +8,7 @@ namespace HelloWorldWebApp.Models
 {
     public class TeamInfo
     {
+
         public TeamInfo()
         {
         }
