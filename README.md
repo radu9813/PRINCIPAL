@@ -1,26 +1,23 @@
-# Hello World EF
+# Hello World
 
-## How to deploy on Heroku
-1. Create heroku account
-2. Create application
-3. Choose container registry as deployment method
-4. Make sure application works locally
-
-
+## How to deploy to Heroku
 Login to heroku
 ```
 heroku login
 heroku container:login
 ```
 
+
+
 Push container
 ```
-heroku container:push -a george-ef web
+heroku container:push -a app-helloworld-sechei web
 ```
+
+
 
 Release the container
 ```
-heroku container:release -a george-ef web
+heroku container:release -a app-helloworld-sechei web
 ```
 
-Heroku application link: https://george-ef.herokuapp.com/
