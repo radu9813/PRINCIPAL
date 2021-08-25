@@ -8,6 +8,17 @@ namespace HelloWorldWebApp.Models
 {
     public class TeamInfo
     {
+
+        public TeamInfo()
+        {
+        }
+
+        public TeamInfo(List<TeamMember> teamMembers)
+        {
+            TeamMembers = teamMembers;
+            Name = "DefaultName";
+        }
+
         public string Name { get; set; }
 
         public List<TeamMember> TeamMembers { get; set; }

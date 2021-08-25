@@ -1,7 +1,5 @@
 ﻿// This JS file now uses jQuery. Pls see here: https://jquery.com/
-
 var connection = new signalR.HubConnectionBuilder().withUrl("/messagehub").build();
-
 
 connection.on("NewTeamMemberAdded", function (name, memberId) {
     console.log(`New team member added: ${name}, ${memberId}`);
@@ -35,6 +33,14 @@ $(document).ready(function () {
             },
             success: function (result) {
                 // Remember string interpolation
+
+                $("#teamMembers").append(
+                    `<li class="member" member-id=${result}>
+                        <span class="name" >${newcomerName}</span>
+                        <span class="delete fa fa-remove" onclick="deleteMember(${result})"></span>
+                        <span class="pencil fa fa-pencil"></span>
+                    </li>`);
+
                 $("#nameField").val("");
                 document.getElementById("addMembersButton").disabled = true;
             }
@@ -97,7 +103,6 @@ function deleteMember(index) {
     $("#clearButton").click(function () {
         document.getElementById("nameField").value = "";
     });
-}());
 
 
 function createNewcomer(name, id) {

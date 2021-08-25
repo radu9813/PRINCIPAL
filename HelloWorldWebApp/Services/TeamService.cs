@@ -2,6 +2,7 @@
 using HelloWorldWebApp.Models;
 using Microsoft.AspNetCore.SignalR;
 
+
 namespace HelloWorldWebApp.Services
 {
     public class TeamService : ITeamService
@@ -49,6 +50,7 @@ namespace HelloWorldWebApp.Services
 
         public int AddTeamMember(string name)
         {
+
             TeamMember newMember = new TeamMember(name, timeService);
             teamInfo.TeamMembers.Add(newMember);
             broadcastService.NewTeamMemberAdded(name, newMember.Id);
@@ -56,7 +58,7 @@ namespace HelloWorldWebApp.Services
         }
 
         public void UpdateMemberName(int memberId, string name)
-{
+        {
             TeamMember member = GetMemberById(memberId);
             member.Name = name;
             broadcastService.UpdatedTeamMember(memberId, name);

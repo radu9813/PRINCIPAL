@@ -2,6 +2,7 @@
 // Copyright (c) Principal 33. All rights reserved.
 // </copyright>
 
+using HelloWorldWebApp.Data;
 using System;
 using System.IO;
 using System.Reflection;
@@ -10,6 +11,9 @@ using HelloWorldWebApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,7 +25,9 @@ namespace HelloWorldWebApp
     {
         public Startup(IConfiguration configuration)
         {
+          
             this.Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -29,6 +35,16 @@ namespace HelloWorldWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string databaseURL = Environment.GetEnvironmentVariable("DATABASE_URL");
+            databaseURL = databaseURL != null ? ConvertHerokuStringToASPString(databaseURL) : Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(databaseURL));
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddControllersWithViews();
+            services.AddScoped<ITeamService, DbTeamService>();
             services.AddSignalR();
             services.AddControllersWithViews();
             services.AddSingleton<ITeamService, TeamService>();
@@ -52,6 +68,7 @@ namespace HelloWorldWebApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrationsEndPoint();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
@@ -75,8 +92,26 @@ namespace HelloWorldWebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
                 endpoints.MapHub<MessageHub>("/messagehub");
+                endpoints.MapRazorPages();
+            });
+        }
+
+        public static string ConvertHerokuStringToASPString(string herokuConnectionString)
+        {
+            var databaseUri = new Uri(herokuConnectionString);
+            string[] userInfo = databaseUri.UserInfo.Split(':');
+
+            int port = databaseUri.Port;
+            string host = databaseUri.Host;
+            string userId = userInfo[0];
+            string password = userInfo[1];
+            string database = databaseUri.AbsolutePath[1..];
+
+            string result = $"Host={host};Port={port};Database={database};User Id={userId};Password={password};Pooling=true;SSL Mode=Require;TrustServerCertificate=True;Include Error Detail=True";
+            return result;
+
+               
             });
         }
     }

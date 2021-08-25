@@ -24,7 +24,8 @@ namespace HelloWorldWebApp
                     var port = Environment.GetEnvironmentVariable("PORT");
 
                     webBuilder.UseStartup<Startup>()
-                    .UseUrls("http://*:" + port);
+                          .UseUrls("http://*:" + port);
                 });
-        }
     }
+}
+
