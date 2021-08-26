@@ -23,6 +23,7 @@ namespace HelloWorldWebApp.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            ViewData["Administrators"] = await userManager.GetUsersInRoleAsync("Administrators");
             return View(await userManager.Users.ToListAsync());
         }
 
@@ -30,13 +31,13 @@ namespace HelloWorldWebApp.Controllers
         {
             var user = await userManager.FindByIdAsync(id);
             await userManager.AddToRoleAsync(user, "Administrators");
-            return View("Index", await userManager.Users.ToListAsync());
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> AssignCommonRole(string id)
         {   var user = await userManager.FindByIdAsync(id);
             await userManager.RemoveFromRoleAsync(user, "Administrators");
-            return View("Index", await userManager.Users.ToListAsync());
+            return RedirectToAction(nameof(Index));
         }
         /* // GET: Users/Details/5
          public async Task<IActionResult> Details(int? id)
