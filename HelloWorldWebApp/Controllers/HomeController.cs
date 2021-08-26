@@ -25,19 +25,21 @@ namespace HelloWorldWebApp.Controllers
             this.timeService = timeService;
         }
 
+        [Authorize]
         [HttpPost]
         public int AddTeamMember(string teamMember)
         {
             return teamService.AddTeamMember(teamMember);
         }
 
-        [HttpDelete]
         [Authorize]
+        [HttpDelete]
         public void RemoveMember(int memberIndex)
         {
             teamService.RemoveMember(memberIndex);
         }
 
+        [Authorize]
         [HttpPost]
         public void UpdateMemberName(int memberId, string name)
         {
