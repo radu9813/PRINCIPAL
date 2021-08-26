@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using HelloWorldWebApp.Models;
 using HelloWorldWebApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -31,6 +32,7 @@ namespace HelloWorldWebApp.Controllers
         }
 
         [HttpDelete]
+        [Authorize]
         public void RemoveMember(int memberIndex)
         {
             teamService.RemoveMember(memberIndex);
