@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Threading.Tasks;
 
 namespace HelloWorldWebApp
 {
@@ -32,7 +33,7 @@ namespace HelloWorldWebApp
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
             string databaseURL = Environment.GetEnvironmentVariable("DATABASE_URL");
             databaseURL = databaseURL != null ? ConvertHerokuStringToASPString(databaseURL) : Configuration.GetConnectionString("DefaultConnection");
@@ -40,8 +41,12 @@ namespace HelloWorldWebApp
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(databaseURL));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            /*services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();*/
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                            .AddRoles<IdentityRole>()
+                            .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddScoped<ITeamService, DbTeamService>();
             services.AddSignalR();
@@ -58,10 +63,11 @@ namespace HelloWorldWebApp
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
             });
+            AssignRoleProgramaticalyAsync(services.BuildServiceProvider());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -94,6 +100,15 @@ namespace HelloWorldWebApp
                 endpoints.MapHub<MessageHub>("/messagehub");
                 endpoints.MapRazorPages();
             });
+
+           
+        }
+
+        private async void AssignRoleProgramaticalyAsync(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var user = await userManager.FindByEmailAsync("kiring9813@gmail.com");
+            await userManager.AddToRoleAsync(user,"Administrators");
         }
 
         public static string ConvertHerokuStringToASPString(string herokuConnectionString)

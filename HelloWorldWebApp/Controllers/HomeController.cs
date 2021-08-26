@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HelloWorldWebApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;
@@ -25,21 +26,21 @@ namespace HelloWorldWebApp.Controllers
             this.timeService = timeService;
         }
 
-        [Authorize]
+        
         [HttpPost]
         public int AddTeamMember(string teamMember)
         {
             return teamService.AddTeamMember(teamMember);
         }
 
-        [Authorize]
+        
         [HttpDelete]
         public void RemoveMember(int memberIndex)
         {
             teamService.RemoveMember(memberIndex);
         }
 
-        [Authorize]
+        
         [HttpPost]
         public void UpdateMemberName(int memberId, string name)
         {
