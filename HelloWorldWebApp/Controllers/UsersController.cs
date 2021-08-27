@@ -39,6 +39,8 @@ namespace HelloWorldWebApp.Controllers
             await userManager.RemoveFromRoleAsync(user, "Administrators");
             return RedirectToAction(nameof(Index));
         }
+
+
         /* // GET: Users/Details/5
          public async Task<IActionResult> Details(int? id)
          {

@@ -11,6 +11,7 @@ HelloWorldWebApp.xml
 *.user
 *.userosscache
 *.sln.docstates
+*.bak
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
