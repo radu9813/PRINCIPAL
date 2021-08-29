@@ -1,5 +1,5 @@
 # Hello World
-
+You can check how the application works if you go to http://app-helloworld-sechei.herokuapp.com/
 ## How to deploy to Heroku
 Login to heroku
 ```
